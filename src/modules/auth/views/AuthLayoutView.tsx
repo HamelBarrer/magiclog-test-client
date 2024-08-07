@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import AuthLoginView from './AuthLoginView';
+import AuthRegisterAccountView from './AuthRegisterAccountView';
 
 interface Props {
   openModel: boolean;
@@ -8,6 +9,7 @@ interface Props {
 
 export default function AuthLayoutView({ openModel, setOpenModel }: Props) {
   const refDialog = useRef<HTMLDialogElement | null>(null);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     if (openModel) {
@@ -22,8 +24,15 @@ export default function AuthLayoutView({ openModel, setOpenModel }: Props) {
   }, [setOpenModel]);
 
   return (
-    <dialog ref={refDialog} className="p-4 rounded-md">
-      <Outlet />
+    <dialog
+      ref={refDialog}
+      className="bg-[#f8faf9] px-8 py-6 rounded-md min-w-[28rem]"
+    >
+      {isLogin ? (
+        <AuthLoginView setIsLogin={setIsLogin} />
+      ) : (
+        <AuthRegisterAccountView setIsLogin={setIsLogin} />
+      )}
     </dialog>
   );
 }
