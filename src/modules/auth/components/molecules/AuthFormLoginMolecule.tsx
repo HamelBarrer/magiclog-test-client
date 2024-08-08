@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { authLoginService } from '../../services/auth.service';
 import AuthButtonAtom from '../atoms/AuthButtonAtom';
 import AuthButtonLineAtom from '../atoms/AuthButtonLineAtom';
 import AuthInputAtom from '../atoms/AuthInputAtom';
@@ -22,8 +23,14 @@ export default function AuthFormLoginMolecule({ setIsLogin }: Props) {
     });
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await authLoginService(form);
+  };
+
   return (
-    <form className="mt-12 flex flex-col gap-4">
+    <form className="mt-12 flex flex-col gap-4" onSubmit={handleSubmit}>
       <AuthLabelAtom>
         Correo
         <AuthInputAtom

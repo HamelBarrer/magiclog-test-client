@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { authRegisterService } from '../../services/auth.service';
 import AuthButtonAtom from '../atoms/AuthButtonAtom';
 import AuthButtonLineAtom from '../atoms/AuthButtonLineAtom';
 import AuthInputAtom from '../atoms/AuthInputAtom';
@@ -10,11 +11,12 @@ interface Props {
 
 export default function AuthFormRegisterAccountMolecule({ setIsLogin }: Props) {
   const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const { email, password, confirmPassword } = form;
+  const { name, email, password, confirmPassword } = form;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -23,8 +25,18 @@ export default function AuthFormRegisterAccountMolecule({ setIsLogin }: Props) {
     });
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await authRegisterService(form);
+  };
+
   return (
-    <form className="mt-12 flex flex-col gap-4">
+    <form className="mt-12 flex flex-col gap-4" onSubmit={handleSubmit}>
+      <AuthLabelAtom>
+        Nombre
+        <AuthInputAtom name="name" value={name} onChange={handleChange} />
+      </AuthLabelAtom>
       <AuthLabelAtom>
         Correo
         <AuthInputAtom
