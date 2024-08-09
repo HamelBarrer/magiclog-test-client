@@ -16,7 +16,7 @@ export default function App() {
 
   return (
     <>
-      {authCurrentUser.userId === 0 ? (
+      {authCurrentUser.userId === 1 ? (
         <CoreLoaderGlobalAtom />
       ) : (
         <BrowserRouter>

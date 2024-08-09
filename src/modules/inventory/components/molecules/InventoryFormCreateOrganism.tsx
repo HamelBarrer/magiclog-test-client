@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useStore } from '../../../../store/store';
 import CoreButtonAtom from '../../../core/components/atoms/CoreButtonAtom';
 import CoreInputAtom from '../../../core/components/atoms/CoreInputAtom';
 import CoreLabelAtom from '../../../core/components/atoms/CoreLabelAtom';
+import { inventoryCreateService } from '../../services/inventory.service';
 
 export default function InventoryFormCreateOrganism() {
+  const { authCurrentUser } = useStore();
+
   const [form, setForm] = useState({
     name: '',
     sku: '',
@@ -19,8 +23,26 @@ export default function InventoryFormCreateOrganism() {
     });
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const quantityNew = Number(quantity);
+    const priceNew = Number(price);
+
+    await inventoryCreateService(
+      {
+        name,
+        sku,
+        price: priceNew,
+        quantity: quantityNew,
+        userId: authCurrentUser.userId,
+      },
+      authCurrentUser.token,
+    );
+  };
+
   return (
-    <form className="w-80 mt-4 flex flex-col gap-6">
+    <form className="w-80 mt-4 flex flex-col gap-6" onSubmit={handleSubmit}>
       <CoreLabelAtom>
         Name
         <CoreInputAtom name="name" value={name} onChange={handleChange} />
