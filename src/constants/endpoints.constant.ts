@@ -3,4 +3,7 @@ export const ENDPOINTS = {
   AUTH_REGISTER: `${import.meta.env.VITE_ENDPOINT_BASE}/api/v1/auth/register`,
 
   INVENTORY_CREATE: `${import.meta.env.VITE_ENDPOINT_BASE}/api/v1/products`,
+  INVENTORY_PROVIDERS: `${
+    import.meta.env.VITE_ENDPOINT_BASE
+  }/api/v1/products/providers`,
 };
