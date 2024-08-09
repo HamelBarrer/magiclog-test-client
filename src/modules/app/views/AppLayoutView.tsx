@@ -12,7 +12,7 @@ export default function AppLayoutView() {
       <div className="wrapper">
         <AppNavbarOrganism setOpenModel={setOpenModel} />
         <AppSidebarOrganism />
-        <main className="[grid-area:main]">
+        <main className="[grid-area:main] overflow-auto">
           <Outlet />
         </main>
       </div>
