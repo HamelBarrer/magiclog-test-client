@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SearchListProviderMolecule from '../components/molecules/SearchListProviderMolecule';
 import {
   searchProductsService,
   searchProvidersService,
@@ -29,20 +30,10 @@ export default function SearchView() {
           <h6>Filtros</h6>
           <button>Borrar</button>
         </div>
-        <ul>
-          <h5>Proveedor</h5>
-          {providers.map((provider) => (
-            <li key={provider.userId}>
-              <label>
-                <input
-                  type="checkbox"
-                  onClick={() => handleProviderClick(provider)}
-                />
-                {provider.name}
-              </label>
-            </li>
-          ))}
-        </ul>
+        <SearchListProviderMolecule
+          providers={providers}
+          handleProviderClick={handleProviderClick}
+        />
       </section>
       <section className="flex gap-4">
         {products.map((product) => (
