@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useStore } from '../../../../store/store';
 import { authLoginService } from '../../services/auth.service';
 import AuthButtonAtom from '../atoms/AuthButtonAtom';
 import AuthButtonLineAtom from '../atoms/AuthButtonLineAtom';
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function AuthFormLoginMolecule({ setIsLogin }: Props) {
+  const { authSetUser } = useStore();
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -26,7 +29,8 @@ export default function AuthFormLoginMolecule({ setIsLogin }: Props) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await authLoginService(form);
+    const data = await authLoginService(form);
+    authSetUser(data);
   };
 
   return (
