@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useStore } from '../../../../store/store';
 import { IProvider } from '../../types/search.type';
 
 interface Props {
@@ -10,13 +11,21 @@ export default function SearchListProviderMolecule({
   providers,
   handleProviderClick,
 }: Props) {
+  const { searchSetAddFilteredProviders, searchSetRemoveFilteredProviders } =
+    useStore();
+
   const [providerChecked, setProviderChecked] = useState<number[]>([]);
 
-  const handleCheckboxChange = (providerId: number, isChecked: boolean) => {
+  const handleCheckboxChange = (provider: IProvider, isChecked: boolean) => {
     setProviderChecked((prevChecked) => {
-      const updatedChecked = isChecked
-        ? [...prevChecked, providerId]
-        : prevChecked.filter((id) => id !== providerId);
+      let updatedChecked: number[] = [];
+      if (isChecked) {
+        searchSetAddFilteredProviders(provider);
+        updatedChecked = [...prevChecked, provider.userId];
+      } else {
+        searchSetRemoveFilteredProviders(provider);
+        updatedChecked = prevChecked.filter((id) => id !== provider.userId);
+      }
 
       handleProviderClick(updatedChecked);
 
@@ -34,7 +43,7 @@ export default function SearchListProviderMolecule({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleCheckboxChange(provider.userId, e.target.checked)
+                  handleCheckboxChange(provider, e.target.checked)
                 }
               />
               {provider.name}

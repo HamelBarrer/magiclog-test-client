@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useStore } from '../../../store/store';
+import SeachListNameProviderMolecule from '../components/molecules/SeachListNameProviderMolecule';
 import SearchListProviderMolecule from '../components/molecules/SearchListProviderMolecule';
 import {
   searchProductsService,
@@ -7,6 +9,8 @@ import {
 import { IProducts, IProvider } from '../types/search.type';
 
 export default function SearchView() {
+  const { searchFilteredProviders } = useStore();
+
   const [providers, setProviders] = useState<IProvider[]>([]);
   const [products, setProducts] = useState<IProducts[]>([]);
 
@@ -39,17 +43,22 @@ export default function SearchView() {
             handleProviderClick={handleProviderClick}
           />
         </section>
-        <section className="flex gap-4">
-          {products.map((product) => (
-            <article
-              key={product.productId}
-              className="border-2 p-2 rounded-lg text-center"
-            >
-              <h6 className="font-bold text-2xl">{product.name}</h6>
-              <p>{product.sku}</p>
-              <p>${product.price}</p>
-            </article>
-          ))}
+        <section>
+          <SeachListNameProviderMolecule
+            searchFilteredProviders={searchFilteredProviders}
+          />
+          <section className="flex gap-4 mt-4">
+            {products.map((product) => (
+              <article
+                key={product.productId}
+                className="border-2 p-2 rounded-lg text-center"
+              >
+                <h6 className="font-bold text-2xl">{product.name}</h6>
+                <p>{product.sku}</p>
+                <p>${product.price}</p>
+              </article>
+            ))}
+          </section>
         </section>
       </section>
     </section>
