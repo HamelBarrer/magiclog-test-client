@@ -26,28 +26,31 @@ export default function SearchView() {
   }, []);
 
   return (
-    <section className="grid [grid-template-columns:15rem_1fr] gap-4">
-      <section>
-        <div className="flex items-center justify-between">
-          <h6>Filtros</h6>
-          <button>Borrar</button>
-        </div>
-        <SearchListProviderMolecule
-          providers={providers}
-          handleProviderClick={handleProviderClick}
-        />
-      </section>
-      <section className="flex gap-4">
-        {products.map((product) => (
-          <article
-            key={product.productId}
-            className="border-2 p-2 rounded-lg text-center"
-          >
-            <h6 className="font-bold text-2xl">{product.name}</h6>
-            <p>{product.sku}</p>
-            <p>${product.price}</p>
-          </article>
-        ))}
+    <section className="p-4">
+      <h2 className="font-semibold text-2xl">Administrador</h2>
+      <section className="grid [grid-template-columns:15rem_1fr] gap-4 mt-4">
+        <section>
+          <div className="flex items-center justify-between">
+            <h6>Filtros</h6>
+            <button>Borrar</button>
+          </div>
+          <SearchListProviderMolecule
+            providers={providers}
+            handleProviderClick={handleProviderClick}
+          />
+        </section>
+        <section className="flex gap-4">
+          {products.map((product) => (
+            <article
+              key={product.productId}
+              className="border-2 p-2 rounded-lg text-center"
+            >
+              <h6 className="font-bold text-2xl">{product.name}</h6>
+              <p>{product.sku}</p>
+              <p>${product.price}</p>
+            </article>
+          ))}
+        </section>
       </section>
     </section>
   );
