@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../../constants/routes.constant';
 import { useStore } from '../../../../store/store';
 import CoreButtonAtom from '../../../core/components/atoms/CoreButtonAtom';
 import CoreInputAtom from '../../../core/components/atoms/CoreInputAtom';
@@ -6,6 +8,7 @@ import CoreLabelAtom from '../../../core/components/atoms/CoreLabelAtom';
 import { inventoryCreateService } from '../../services/inventory.service';
 
 export default function InventoryFormCreateOrganism() {
+  const navigate = useNavigate();
   const { authCurrentUser } = useStore();
 
   const [form, setForm] = useState({
@@ -14,6 +17,9 @@ export default function InventoryFormCreateOrganism() {
     quantity: 0,
     price: 0,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Destructuring of form object
   const { name, sku, quantity, price } = form;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,21 +30,28 @@ export default function InventoryFormCreateOrganism() {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
+    try {
+      const quantityNew = Number(quantity);
+      const priceNew = Number(price);
 
-    const quantityNew = Number(quantity);
-    const priceNew = Number(price);
-
-    await inventoryCreateService(
-      {
-        name,
-        sku,
-        price: priceNew,
-        quantity: quantityNew,
-        userId: authCurrentUser.userId,
-      },
-      authCurrentUser.token,
-    );
+      await inventoryCreateService(
+        {
+          name,
+          sku,
+          price: priceNew,
+          quantity: quantityNew,
+          userId: authCurrentUser.userId,
+        },
+        authCurrentUser.token,
+      );
+      navigate(ROUTES.INVENTORY);
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,7 +83,9 @@ export default function InventoryFormCreateOrganism() {
         />
       </CoreLabelAtom>
       <div className="flex justify-end">
-        <CoreButtonAtom type="submit">Crear</CoreButtonAtom>
+        <CoreButtonAtom type="submit" disabled={isLoading}>
+          Crear
+        </CoreButtonAtom>
       </div>
     </form>
   );
