@@ -1,11 +1,10 @@
 import { ENDPOINTS } from '../../../constants/endpoints.constant';
 import { IProducts, IProvider } from '../types/search.type';
 
-export const searchProductsService = async (providerId?: number) => {
-  console.log({ providerId });
+export const searchProductsService = async (providerId?: number[]) => {
   let url = ENDPOINTS.INVENTORY_CREATE;
   if (providerId) {
-    url = `${ENDPOINTS.INVENTORY_CREATE}?provider=${providerId}`;
+    url = `${ENDPOINTS.INVENTORY_CREATE}?provider=[${providerId}]`;
   }
 
   const response = await fetch(url);

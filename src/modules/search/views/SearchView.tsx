@@ -10,8 +10,10 @@ export default function SearchView() {
   const [providers, setProviders] = useState<IProvider[]>([]);
   const [products, setProducts] = useState<IProducts[]>([]);
 
-  const handleProviderClick = async (provider: IProvider) => {
-    const allProducts = await searchProductsService(provider.userId);
+  const handleProviderClick = async (providerId: number[]) => {
+    const allProducts = await searchProductsService(
+      providerId.length !== 0 ? providerId : undefined,
+    );
     setProducts(allProducts);
   };
 
