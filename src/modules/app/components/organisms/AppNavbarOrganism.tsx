@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../../../store/store';
 
 interface Props {
@@ -5,10 +6,17 @@ interface Props {
 }
 
 export default function AppNavbarOrganism({ setOpenModel }: Props) {
-  const { authCurrentUser } = useStore();
+  const { authCurrentUser, authClearUser } = useStore();
+
+  const navigate = useNavigate();
 
   const handleLogInClick = () => {
     setOpenModel(true);
+  };
+
+  const handleLogoutClick = () => {
+    authClearUser();
+    navigate('/');
   };
 
   return (
@@ -19,7 +27,9 @@ export default function AppNavbarOrganism({ setOpenModel }: Props) {
           <p>{authCurrentUser.name}</p>
           {authCurrentUser.name === '' ? (
             <button onClick={handleLogInClick}>Inicia sesión</button>
-          ) : null}
+          ) : (
+            <button onClick={handleLogoutClick}>Cerrar sesión</button>
+          )}
         </section>
       </div>
     </header>

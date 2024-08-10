@@ -1,4 +1,5 @@
 import { ENDPOINTS } from '../../../constants/endpoints.constant';
+import { fetchAuthentication } from '../../../http/fetch.http';
 import { IProducts, IProvider } from '../types/search.type';
 
 export const searchProductsService = async (providerId?: number[]) => {
@@ -7,7 +8,7 @@ export const searchProductsService = async (providerId?: number[]) => {
     url = `${ENDPOINTS.INVENTORY_CREATE}?provider=[${providerId}]`;
   }
 
-  const response = await fetch(url);
+  const response = await fetchAuthentication(url);
   const dataJson = await response.json();
 
   return dataJson as IProducts[];
